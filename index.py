@@ -23,7 +23,7 @@ def result():
     if response.status_code == 200:
         data = response.json()
         print(data)
-        return ""
+        return "Sucesso"
     else:
         return "Erro ao acessar a API"
 
