@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request
+from json2html import json2html
+from urllib.parse import urlencode
 import requests
 
 app = Flask(__name__)
@@ -7,23 +9,45 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/result', methods=['POST'])
+@app.route('/buscar', methods=['POST'])
 def result():
 
-    region = request.form['region']
-    species = request.form['species']
-    conservation_status = request.form['conservation_status']
-    water_temperature = request.form['water_temperature']
-    ph = request.form['ph']
-    pollution_leves = request.form['pollution_leves']
-    
-    api_url = {f'https://fiap-3sis-gs-20241.azurewebsites.net/OceanData?regiao={region}&especie={species}&statusConservacao={conservation_status}&temperaturaMin={water_temperature}&temperaturaMax={water_temperature}&phMin={ph}&phMax={ph}&nivelPoluicao={pollution_leves}'}
+    region = request.form.get('region', '')
+    species = request.form.get('species', '')
+    conservation_status = request.form.get('conservation-status', '')
+    water_temperature = request.form.get('water_temperature', '')
+    ph = request.form.get('ph', '')
+    pollution_levels = request.form.get('pollution-leves', '')
+
+    params = {}
+
+    if region:
+        params['regiao'] = region
+    if species:
+        params['especie'] = species
+    if conservation_status:
+        params['statusConservacao'] = conservation_status
+    if water_temperature:
+        params['temperaturaMin'] = params['temperaturaMax'] = water_temperature
+    if ph:
+        params['phMin'] = ph
+        params['phMax'] = ph
+
+    if pollution_levels:
+        params['nivelPoluicao'] = pollution_levels
+
+    api_url = 'https://fiap-3sis-gs-20241.azurewebsites.net/OceanData?' + urlencode(params).replace("+","%20")
+ 
     response = requests.get(api_url)
-    
+
     if response.status_code == 200:
         data = response.json()
-        print(data)
-        return "Sucesso"
+
+        html = "String Busca: <br>"+ api_url 
+        html_table = json2html.convert(json = data)
+        html_table = html + html_table
+
+        return render_template('index.html', html_table="")
     else:
         return "Erro ao acessar a API"
 

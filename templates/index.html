@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filter and Data Table</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    form {
+      display: inline-block;
+      margin-bottom: 50px;
+    }
+
+    .form-container {
+  width: 300px;
+  margin: 0 auto;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+table {
+  margin-top: 20px;
+}
+
+  </style>
+</head>
+<body>
+<h1>Filters</h1>
+
+  <div class="form-container">
+    <form id="filter" action="/buscar" method="post">
+      <label for="region">Region</label>
+      <input type="text" id="region" name="region">
+
+      <label for="species">Species</label>
+      <input type="text" id="species" name="species">
+
+      <label for="conservation-status">Conservation Status</label>
+      <input type="text" id="conservation-status" name="conservation-status">
+
+      <label for="water-temperature">Water Temperature</label>
+      <input type="text" id="water-temperature" name="water-temperature">
+
+      <label for="ph">PH</label>
+      <input type="text" id="ph" name="ph">
+
+      <label for="pollution-levels">Pollution Levels</label>
+      <input type="text" id="pollution-levels" name="pollution-levels">
+      <input type="submit" value="search">
+    </form>
+
+  </div>
+
+  <div>
+    {{ html_table | safe }}
+</div>
+
+</body>
+</html>
