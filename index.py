@@ -47,7 +47,7 @@ def result():
         html_table = json2html.convert(json = data)
         html_table = html + html_table
 
-        return render_template('index.html', html_table="")
+        return render_template('index.html', html_table=html_table)
     else:
         return "Erro ao acessar a API"
 
